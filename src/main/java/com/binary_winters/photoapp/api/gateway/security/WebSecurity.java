@@ -29,9 +29,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     	.antMatchers(environment.getProperty("api.h2console.url.path")).permitAll()
     	.antMatchers(HttpMethod.POST, environment.getProperty("api.registration.url.path")).permitAll()
     	.antMatchers(HttpMethod.POST, environment.getProperty("api.login.url.path")).permitAll()
-    	.anyRequest().authenticated();
+    	.anyRequest().authenticated()
 //    	.anyRequest().authenticated(): Any other HTTP request should be allowed but the user will need to be authenticated.
-
+    	.and()
+    	.addFilter(new AuthorizationFilter(authenticationManager(), environment));
 
     	http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     	
